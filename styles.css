@@ -1,0 +1,42 @@
+
+### **CSS Styles**
+
+Create a `styles.css` file with the following content:
+
+```css
+body {
+    font-family: Arial, sans-serif;
+}
+
+.header {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.irow {
+    margin-bottom: 10px;
+}
+
+.irow input[type="number"], .irow input[type="text"] {
+    width: 100px;
+    margin-right: 10px;
+}
+
+.irow input[type="button"] {
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    padding: 0;
+    margin-right: 10px;
+}
+
+#controls {
+    margin-top: 20px;
+}
+
+#controls input[type="button"], #controls input[type="submit"] {
+    width: 100px;
+    height: 30px;
+    font-size: 16px;
+    margin-right: 10px;
+}
