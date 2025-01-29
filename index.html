@@ -3,36 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ambulance Service Invoice Generator</title>
+    <title>Bhavik Plastic - Store Management System</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <form onsubmit="return invoice.print()">
-        <div class="header">Invoice</div>
-        <div id="inRow">
-            <input type="text" id="inNum" placeholder="Invoice Number" required>
-            <input type="date" id="inDate" required>
-        </div>
-        <textarea id="inBill" placeholder="Bill To" required></textarea>
+    <div class="container">
+        <!-- Header Section -->
+        <header>
+            <h1>Bhavik Plastic</h1>
+            <nav>
+                <button class="nav-btn active" data-page="dashboard">Dashboard</button>
+                <button class="nav-btn" data-page="transactions">Transactions</button>
+                <button class="nav-btn" data-page="payments">Payments</button>
+                <button class="nav-btn" data-page="reports">Reports</button>
+            </nav>
+        </header>
 
-        <div class="header">Items</div>
-        <div id="itemsList"></div>
-        <div id="itemsAdd" class="irow">
-            <input type="number" class="qty" min="1" placeholder="Qty" required>
-            <input type="text" class="item" placeholder="Item Name" required>
-            <input type="number" class="price" min="0.00" step="0.01" placeholder="Price Each" required>
-            <input type="button" class="action" value="+" onclick="invoice.add()">
-        </div>
+        <!-- Main Content Area -->
+        <main>
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="page active">
+                <h2>Dashboard</h2>
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <h3>Pending Payments</h3>
+                        <p class="amount" id="pendingAmount">₹0</p>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>Overdue Amount</h3>
+                        <p class="amount" id="overdueAmount">₹0</p>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>Today's Transactions</h3>
+                        <p class="amount" id="todayTransactions">0</p>
+                    </div>
+                </div>
+                
+                <div class="recent-transactions">
+                    <h3>Recent Transactions</h3>
+                    <table id="recentTransactionsTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Product</th>
+                                <th>Supplier</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentTransactionsList"></tbody>
+                    </table>
+                </div>
+            </section>
 
-        <div class="header">Totals</div>
-        <div id="totals">Grand Total: $0.00</div>
+            <!-- Transactions Section -->
+            <section id="transactions" class="page">
+                <h2>Record Transaction</h2>
+                <form id="transactionForm">
+                    <div class="form-group">
+                        <label for="transactionType">Transaction Type</label>
+                        <select id="transactionType" required>
+                            <option value="debit">Debit (Purchase)</option>
+                            <option value="credit">Credit (Sale)</option>
+                        </select>
+                    </div>
 
-        <div id="controls">
-            <input type="button" value="Save" onclick="invoice.save()">
-            <input type="submit" value="Print">
-        </div>
-    </form>
+                    <div class="form-group">
+                        <label for="productName">Product Name</label>
+                        <input type="text" id="productName" required>
+                    </div>
 
-    <script src="invoice.js"></script>
+                    <div class="form-group">
+                        <label for="supplierName">Supplier/Customer Name</label>
+                        <input type="text" id="supplierName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="quantity">Quantity</label>
+                        <input type="number" id="quantity" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="amount">Amount (₹)</label>
+                        <input type="number" id="amount" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dueDate">Payment Due Date</label>
+                        <input type="date" id="dueDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">Notes</label>
+                        <textarea id="notes"></textarea>
+                    </div>
+
+                    <button type="submit">Record Transaction</button>
+                </form>
+            </section>
+
+            <!-- Payments Section -->
+            <section id="payments" class="page">
+                <h2>Payment Management</h2>
+                <div class="payment-filters">
+                    <select id="paymentStatusFilter">
+                        <option value="all">All Payments</option>
+                        <option value="pending">Pending</option>
+                        <option value="cleared">Cleared</option>
+                        <option value="overdue">Overdue</option>
+                    </select>
+                    <input type="text" id="paymentSearch" placeholder="Search transactions...">
+                </div>
+
+                <table id="paymentsTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Due Date</th>
+                            <th>Product</th>
+                            <th>Supplier</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="paymentsList"></tbody>
+                </table>
+            </section>
+
+            <!-- Reports Section -->
+            <section id="reports" class="page">
+                <h2>Reports & Analytics</h2>
+                <div class="reports-grid">
+                    <div class="report-card">
+                        <h3>Cash Flow Summary</h3>
+                        <canvas id="cashFlowChart"></canvas>
+                    </div>
+                    <div class="report-card">
+                        <h3>Top Suppliers</h3>
+                        <canvas id="suppliersChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="date-range-filter">
+                    <label for="startDate">Start Date:</label>
+                    <input type="date" id="startDate">
+                    <label for="endDate">End Date:</label>
+                    <input type="date" id="endDate">
+                    <button onclick="generateReport()">Generate Report</button>
+                </div>
+
+                <div class="report-summary" id="reportSummary"></div>
+            </section>
+        </main>
+
+        <!-- Notifications Area -->
+        <div id="notifications" class="notifications"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script src="bpk.js"></script>
 </body>
-</html>
+    </html>
